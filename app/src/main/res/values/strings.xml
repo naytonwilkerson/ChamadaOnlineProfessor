@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Chamada Professor</string>
+    <string name="wifi">WIFI</string>
+    <string name="buscar">Buscar</string>
+    <string name="iniciar">Iniciar</string>
+    <string name="descoberta_de_pares">Descoberta de Pares</string>
+    <string name="chama_online">Chama Online</string>
+    <string name="iniciar_aula">Iniciar Aula</string>
+    <string name="presen_as_confirmadas">Presenças Confirmadas:</string>
+</resources>

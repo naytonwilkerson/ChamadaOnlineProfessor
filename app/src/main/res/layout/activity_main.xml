@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/Statu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/chama_online"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="417dp"
+        android:layout_alignTop="@+id/Statu"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="-347dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/startAula"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/peerListView"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="-70dp"
+                android:layout_toStartOf="@+id/discovery"
+                android:text="FINALIZAR AULA" />
+
+            <Button
+                android:id="@+id/wifiOnOff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/wifi"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <TextView
+                android:id="@+id/presenca"
+                android:layout_width="361dp"
+                android:layout_height="342dp"
+                android:layout_below="@+id/startAula"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="13dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/presen_as_confirmadas"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ListView
+                android:id="@+id/peerListView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/wifiOnOff"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="26dp"
+                android:background="@color/colorPrimary"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <Button
+                android:id="@+id/discovery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/wifiOnOff"
+                android:layout_alignBottom="@+id/wifiOnOff"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="-25dp"
+                android:text="@string/buscar"
+                tools:layout_editor_absoluteX="185dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:progress="0"
+                
+                android:layout_width="85dp"
+                android:layout_height="72dp"
+                android:layout_alignParentStart="false"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="51dp"
+                android:layout_marginTop="293dp" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
