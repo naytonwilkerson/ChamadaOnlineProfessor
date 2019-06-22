@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.NetworkInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.util.Log;
 import android.widget.Toast;
+
+import java.io.IOException;
 
 public class BroadcastReceivery extends BroadcastReceiver {
 
@@ -52,12 +55,26 @@ public class BroadcastReceivery extends BroadcastReceiver {
 
             if(networkInfo.isConnected())
             {
+                Toast.makeText(context, "Conexão estabelecida", Toast.LENGTH_SHORT).show();
                 mManager.requestConnectionInfo(mChannel, mActivity.connectionInfoListener);
             }else {
-                Toast.makeText(context, "Sem conexões", Toast.LENGTH_SHORT).show();
+
+                try {
+
+                    if(MainActivity.ServerClass.serverSocket != null){
+                        MainActivity.ServerClass.serverSocket.close();
+                        Toast.makeText(context, "Aberto a novas conexões", Toast.LENGTH_SHORT).show();
+                        Log.i("SERVER SOCKET","FECHADO!!");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
         }else if(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION.equals(action)){
+
+            Toast.makeText(context, "Estado da Rede Alterado", Toast.LENGTH_SHORT).show();
 
         }
     }

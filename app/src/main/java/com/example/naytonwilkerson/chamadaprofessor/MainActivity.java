@@ -12,24 +12,30 @@ import android.net.wifi.p2p.WifiP2pManager;
 
 import android.os.Handler;
 import android.os.Message;
+
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.naytonwilkerson.chamadaprofessor.MainActivity.ServerClass.serverSocket;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     TextView connectionStatus;
     static TextView presenca;
 
-    WifiManager wifiManager;
+    static WifiManager wifiManager;
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
     BroadcastReceiver mReceiver;
@@ -49,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
     List<WifiP2pDevice> peers = new ArrayList<>();
     String[] deviceNameArray;
     WifiP2pDevice[] deviceArray;
-    ProgressBar mProgressBar;
+
 
     static final int MESSAGE_READ = 1;
-    ServerClass serverClass;
+    static ServerClass serverClass;
     static SendReceiver sendReceiver;
 
 
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         initialWork();
         exqListener();
+
     }
 
 
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
             serverClass = new MainActivity.ServerClass();
             serverClass.start();
+
+
         }
     };
 
@@ -89,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
                     String confirm = "Presença confirmada!!";
                     sendReceiver.write(confirm.getBytes());
 
+
+
                     break;
             }
             return true;
@@ -96,21 +107,27 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-    public class ServerClass extends Thread{
-        Socket socket;
-        ServerSocket serverSocket;
+    public static class ServerClass extends Thread{
+        static Socket socket;
+        static ServerSocket serverSocket;
+
 
         @Override
         public void run(){
             try {
-                serverSocket = new ServerSocket(8888);
-                socket = serverSocket.accept();
-                sendReceiver= new MainActivity.SendReceiver(socket);
-                sendReceiver.start();
+
+                    serverSocket = new ServerSocket(8888);
+                    socket = serverSocket.accept();
+                    Log.i("SERVER SOCKET","ABERTO!!");
+                    sendReceiver = new MainActivity.SendReceiver(socket);
+
+                    sendReceiver.start();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+
     }
 
 
@@ -136,16 +153,19 @@ public class MainActivity extends AppCompatActivity {
             byte[] buffer = new byte[1024];
             int bytes;
 
-            while(socket!=null){
-                try {
-                    bytes=inputStream.read(buffer);
-                    if (bytes>0){
-                        handler.obtainMessage(MESSAGE_READ,bytes,-1,buffer).sendToTarget();
+                while(socket!=null){
+                    try {
+                        bytes=inputStream.read(buffer);
+                        if (bytes>0){
+                            handler.obtainMessage(MESSAGE_READ,bytes,-1,buffer).sendToTarget();
+                            wifiManager.setWifiEnabled(false);
+                            wifiManager.setWifiEnabled(true);
+                        }
+                    } catch (IOException e) {
+                     e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+                    }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
 
         static void write(byte[] bytes) {
@@ -167,13 +187,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (wifiManager.isWifiEnabled()) {
                     wifiManager.setWifiEnabled(false);
-                    btnOnOff.setText("Wifi ON");
+                    btnOnOff.setText("LIGAR WIFI");
                 } else {
                     wifiManager.setWifiEnabled(true);
-                    btnOnOff.setText("Wifi OFF");
+                    btnOnOff.setText("DESLIGAR WIFI");
                 }
             }
         });
+
 
         btnDiscovery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                 final WifiP2pDevice device = deviceArray[position];
                 WifiP2pConfig config = new WifiP2pConfig();
                 config.deviceAddress = device.deviceAddress;
-                mManager.removeGroup(mChannel, new WifiP2pManager.ActionListener() {
+                mManager.cancelConnect(mChannel, new WifiP2pManager.ActionListener() {
 
                     @Override
                     public void onSuccess() {
@@ -223,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess() {
-                        Toast.makeText(getApplicationContext(), "Conectado a " + device.deviceName, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Conectado a " + device.deviceName, Toast.LENGTH_LONG).show();
                     }
                     @Override
                     public void onFailure(int reason) {
@@ -235,8 +256,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnInit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Aula Finalizada." , Toast.LENGTH_SHORT).show();
-                mProgressBar.stopNestedScroll();
+                Toast.makeText(getApplicationContext(), "Relatorio Gerado!" , Toast.LENGTH_SHORT).show();
+
             }
         });
 
@@ -248,7 +269,6 @@ public class MainActivity extends AppCompatActivity {
         btnInit = findViewById(R.id.startAula);
         listView = findViewById(R.id.peerListView);
         connectionStatus = findViewById(R.id.Statu);
-        mProgressBar =  findViewById(R.id.progressBar);
         presenca = findViewById(R.id.presenca);
 
 
